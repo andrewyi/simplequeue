@@ -37,6 +37,15 @@ class TestParam:
                 )
 
     @classmethod
+    def medium(cls):
+        return cls(
+                total=1000000,
+                q_size=35,
+                prod_num=13,
+                con_num=17,
+                )
+
+    @classmethod
     def small(cls):
         return cls(
                 total=100000,
@@ -115,9 +124,10 @@ def divide_to_ranges(total, slots):
 
 
 def main():
+    # tp = TestParam.tiny()
     # tp = TestParam.small()
+    tp = TestParam.medium()
     # tp = TestParam.large()
-    tp = TestParam.tiny()
 
     source_set = set(x for x in range(0, tp.total))
     queue = Queue(tp.q_size)

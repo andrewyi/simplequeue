@@ -30,10 +30,11 @@ class SimpleQueue:
         self.empty = True
 
         self._l = Lock()
-        self.cond = Condition(self._l)
+        self._wc = Condition(self._l)
+        self._rc = Condition(self._l)
 
     def get(self, block=True):
-        self.cond.acquire()
+        self._l.acquire()
         v = None
 
         try:
@@ -42,7 +43,7 @@ class SimpleQueue:
                     raise Empty()
                 else:
                     while True:
-                        self.cond.wait()
+                        self._rc.wait()
                         if not self.empty:
                             break
 
@@ -56,22 +57,22 @@ class SimpleQueue:
 
             if self.full:
                 self.full = False
-                self.cond.notify_all()
+                self._wc.notify_all()
 
         finally:
-            self.cond.release()
+            self._l.release()
 
         return v
 
     def put(self, v, block=True):
-        self.cond.acquire()
+        self._l.acquire()
         try:
             if self.full:
                 if not block:
                     raise Full()
                 else:
                     while True:
-                        self.cond.wait()
+                        self._wc.wait()
                         if not self.full:
                             break
 
@@ -85,7 +86,7 @@ class SimpleQueue:
 
             if self.empty:
                 self.empty = False
-                self.cond.notify_all()
+                self._rc.notify_all()
 
         finally:
-            self.cond.release()
+            self._l.release()
