@@ -5,7 +5,7 @@ so I wrote this SimpleQueue to eliminate the overhead of queue.Queue.
 Unfortunately I have no time to do benchmarks and this code became just a pity demo.
 
 SimpleQueue uses a list as internal buffer.
-Conrrectness is asured by running test.py multiple times with multiple scales.
+Correctness is assured by running test.py multiple times with different kinds of scales.
 Performance benchmark is not done yet, maybe I'll deal with it later.
 
 "wrong_simple_queue.py" is a wrong implementation, keep it here for attention,
